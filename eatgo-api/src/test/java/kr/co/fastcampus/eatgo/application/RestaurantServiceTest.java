@@ -1,15 +1,19 @@
 package kr.co.fastcampus.eatgo.application;
 
-import kr.co.fastcampus.eatgo.domain.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import kr.co.fastcampus.eatgo.domain.MenuItem;
+import kr.co.fastcampus.eatgo.domain.MenuItemRepository;
+import kr.co.fastcampus.eatgo.domain.Restaurant;
+import kr.co.fastcampus.eatgo.domain.RestaurantRepository;
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -23,8 +27,8 @@ public class RestaurantServiceTest {
     @Mock
     private MenuItemRepository menuItemRepository;
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         mockRestaurantRepository();
@@ -53,16 +57,16 @@ public class RestaurantServiceTest {
     public void getRestaurants() {
         List<Restaurant> restaurants = restaurantService.getRestaurants();
 
-        assertThat(restaurants.get(0).getId()).isEqualTo(1004L);
+        assertThat(restaurants.get(0).getId(), is(1004L));
     }
 
     @Test
     public void getRestaurant() {
         Restaurant restaurant = restaurantService.getRestaurant(1004L);
-        assertThat(restaurant.getId()).isEqualTo(1004L);
+        assertThat(restaurant.getId(), is(1004L));
 
         MenuItem menuItem = restaurant.getMenuItems().get(0);
-        assertThat(menuItem.getName()).isEqualTo("Kimchi");
+        assertThat(menuItem.getName(), is("Kimchi"));
     }
 
     @Test
@@ -74,6 +78,6 @@ public class RestaurantServiceTest {
 
         Restaurant created = restaurantService.addRestaurant(restaurant);
 
-        assertThat(created.getId()).isEqualTo(1234L);
+        assertThat(created.getId(), is(1234L));
     }
 }

@@ -1,10 +1,11 @@
 package kr.co.fastcampus.eatgo.domain;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
-class RestaurantRepositoryImplTest {
+public class RestaurantRepositoryImplTest {
 
     @Test
     public void save() {
@@ -15,7 +16,7 @@ class RestaurantRepositoryImplTest {
         repository.save(restaurant);
         int newCount = repository.findAll().size();
 
-        assertThat(restaurant.getId()).isEqualTo(1234L);
-        assertThat(oldCount + 1).isEqualTo(newCount);
+        assertThat(restaurant.getId(), is(1234L));
+        assertThat(oldCount + 1, is(newCount));
     }
 }
