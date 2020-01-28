@@ -19,4 +19,13 @@ public class UserService {
     public List<User> getUsers() {
         return (List<User>) userRepository.findAll();
     }
+
+    public User addUser(String email, String name) {
+        User user = User.builder()
+                .email(email)
+                .name(name)
+                .build();
+
+        return userRepository.save(user);
+    }
 }
