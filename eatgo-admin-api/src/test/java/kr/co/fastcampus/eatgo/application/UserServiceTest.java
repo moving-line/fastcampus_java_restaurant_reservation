@@ -9,11 +9,13 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 public class UserServiceTest {
 
@@ -59,5 +61,30 @@ public class UserServiceTest {
         User user = userService.addUser(email, email);
 
         assertThat(user.getName(), is(name));
+    }
+
+    @Test
+    public void updateUser() {
+        Long id = 1004L;
+        String email = "admin@exmaple.com";
+        String name = "Superman";
+        Long level = 100L;
+
+        User mockUser = User.builder()
+                .id(id)
+                .email(email)
+                .name("Administrator")
+                .level(1L)
+                .build();
+
+        given(userRepository.findById(id)).willReturn(Optional.of(mockUser));
+
+        User user = userService.updateUser(id, email, name, level);
+
+        verify(userRepository).findById(id);
+
+        assertThat(user.getName(), is("Superman"));
+        assertThat(user.isAdmin(), is(true));
+
     }
 }

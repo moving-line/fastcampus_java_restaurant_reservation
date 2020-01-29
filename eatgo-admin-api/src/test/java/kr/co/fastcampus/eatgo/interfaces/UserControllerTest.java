@@ -17,8 +17,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -63,5 +62,30 @@ public class UserControllerTest {
                 .andExpect(status().isCreated());
 
         verify(userService).addUser(email, name);
+    }
+
+    @Test
+    public void update() throws Exception {
+        Long id = 1004L;
+        String email = "admin@exmaple.com";
+        String name = "Administrator";
+        Long level = 100L;
+
+        User user = User.builder()
+                .id(id)
+                .email(email)
+                .name(name)
+                .level(level)
+                .build();
+
+        given(userService.updateUser(id, email, name, level)).willReturn(user);
+
+        mvc.perform(patch("/users/" + user.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\" : 1004, \"email\" : \"admin@exmaple.com\", \"name\" : \"Administrator\", \"level\" : 100}")
+        )
+                .andExpect(status().isOk());
+
+        verify(userService).updateUser(id, email, name, level);
     }
 }

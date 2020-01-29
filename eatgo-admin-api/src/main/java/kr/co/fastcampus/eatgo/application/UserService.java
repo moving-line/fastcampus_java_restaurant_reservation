@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -27,5 +28,15 @@ public class UserService {
                 .build();
 
         return userRepository.save(user);
+    }
+
+    public User updateUser(Long id, String email, String name, Long level) {
+        User user = userRepository.findById(id).orElseGet(null);
+
+        user.setEmail(email);
+        user.setName(name);
+        user.setLevel(level);
+
+        return user;
     }
 }
