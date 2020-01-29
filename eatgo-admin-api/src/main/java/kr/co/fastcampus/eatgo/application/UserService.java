@@ -5,10 +5,12 @@ import kr.co.fastcampus.eatgo.domain.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class UserService {
     private UserRepository userRepository;
 
@@ -25,6 +27,7 @@ public class UserService {
         User user = User.builder()
                 .email(email)
                 .name(name)
+                .level(1L)
                 .build();
 
         return userRepository.save(user);
@@ -36,6 +39,13 @@ public class UserService {
         user.setEmail(email);
         user.setName(name);
         user.setLevel(level);
+
+        return user;
+    }
+
+    public User deactivateUser(Long id) {
+        User user = userRepository.findById(id).orElseGet(null);
+        user.deactivate();
 
         return user;
     }
